@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AERODOC – AI-Powered Healthcare</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --primary: #0b65ff;
+      --primary-dark: #0645b3;
+      --bg: #f5f7fb;
+      --text: #102031;
+      --muted: #6b7a90;
+      --card-bg: #ffffff;
+      --border: #e0e6f0;
+      --radius-lg: 20px;
+      --radius-md: 10px;
+      --shadow-soft: 0 15px 40px rgba(15, 35, 75, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* NAVBAR */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 1px 0 rgba(15, 35, 75, 0.06);
+    }
+
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+  
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 0.55rem 1.3rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 10px 25px rgba(11, 101, 255, 0.4);
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid rgba(11, 101, 255, 0.2);
+    }
+
+    .btn-outline:hover {
+      background: rgba(11, 101, 255, 0.05);
+    }
+
+    /* LAYOUT */
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 1.4fr);
+      gap: 1.75rem;
+    }
+
+    /* HERO */
+    .hero-card {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 1.75rem;
+      align-items: center;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.2rem 0.8rem;
+      border-radius: 999px;
+      background: #eef3ff;
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+
+    .hero-title {
+      font-size: 2.35rem;
+      line-height: 1.1;
+      margin-bottom: 0.8rem;
+    }
+
+    .hero-title span {
+      color: var(--primary);
+    }
+
+    .hero-text {
+      color: var(--muted);
+      font-size: 0.98rem;
+      margin-bottom: 1.2rem;
+      max-width: 420px;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .hero-right {
+      position: relative;
+      text-align: center;
+    }
+
+    .hero-image {
+      width: 100%;
+      max-width: 260px;
+      border-radius: 50%;
+      
+      background: radial-gradient(circle at 30% 10%, #FFFFFF, #FFFFFF);
+      aspect-ratio: 1;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+
+    .stat-pill {
+      position: absolute;
+      right: -4px;
+      top: 4%;
+      background: #ffffff;
+      border-radius: 999px;
+      padding: 0.6rem 1rem;
+      font-size: 0.8rem;
+      box-shadow: var(--shadow-soft);
+      color: var(--muted);
+    }
+
+    .stat-pill strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .stat-card {
+      position: absolute;
+      left: 0;
+      bottom: 4%;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.78rem;
+      box-shadow: var(--shadow-soft);
+      text-align: left;
+      width: 180px;
+    }
+
+    .stat-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    /* RIGHT SIDEBAR */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 1rem 1.1rem;
+      box-shadow: 0 8px 20px rgba(15, 35, 75, 0.08);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .pill {
+      background: #eef3ff;
+      color: var(--primary);
+      border-radius: 999px;
+      padding: 0.15rem 0.6rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    .testimonial-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      margin-top: 0.4rem;
+    }
+
+    .testimonial {
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 0.6rem 0.7rem;
+      display: flex;
+      gap: 0.55rem;
+      align-items: flex-start;
+      background: #fafbff;
+    }
+
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #dde6ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .testimonial-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .testimonial-text {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .rating {
+      font-size: 0.75rem;
+      color: #f5a623;
+      margin-top: 0.2rem;
+    }
+
+    .app-preview {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7rem;
+      margin: 0.5rem 0 0.9rem;
+    }
+
+    .phone {
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      background: linear-gradient(145deg, #f8fbff, #e5efff);
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .store-buttons {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .store-btn {
+      flex: 1 1 120px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.7rem;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      color: var(--text);
+      background: #ffffff;
+    }
+
+    .store-btn span {
+      font-weight: 600;
+    }
+
+    /* SERVICES + OTHER SECTIONS */
+    .section {
+      margin-top: 2rem;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .section-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .service-card {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      border: 1px solid var(--border);
+    }
+
+    .service-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      background: #eef3ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: var(--primary);
+      margin-bottom: 0.6rem;
+    }
+
+    .service-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .service-text {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .step-card {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 0.9rem;
+      border: 1px dashed var(--border);
+    }
+
+    .step-number {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: #eef3ff;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .step-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .step-text {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .trust-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .trust-list {
+      font-size: 0.85rem;
+      color: var(--muted);
+      display: grid;
+      gap: 0.4rem;
+      padding-left: 1.1rem;
+    }
+
+    .trust-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: flex-end;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.75rem;
+      border-radius: 999px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      font-size: 0.8rem;
+    }
+
+    .badge-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #eef3ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 0.85rem;
+    }
+
+    .about-text {
+      font-size: 0.86rem;
+      color: var(--muted);
+      max-width: 520px;
+    }
+
+    .team-mini {
+      margin-top: 0.9rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* FOOTER */
+    footer {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .footer-top {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+
+    .footer-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .socials {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .social-pill {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
+      .page {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .sidebar {
+        order: -1;
+      }
+
+      .hero-card {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .trust-row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        flex-wrap: wrap;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero-card {
+        padding: 1.4rem 1.3rem;
+      }
+
+      .hero-title {
+        font-size: 1.9rem;
+      }
+
+      .services-grid,
+      .steps {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .app-preview {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="logo">
+        <div class="logo-mark"><img src="images/logo.png" width="45" height="35"></div>
+        <span>AERODOC</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#how">How it works</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="btn btn-outline">Login</button>
+        <button class="btn btn-primary">Contact</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="page" id="home">
+    <!-- LEFT MAIN COLUMN -->
+    <section>
+      <!-- HERO -->
+      <section class="hero-card">
+        <div>
+          <div class="tag">
+            Prototype v16.9
+          </div>
+          <h1 class="hero-title">
+            <span>AI‑Powered</span> Healthcare at Your Fingertips
+          </h1>
+          <p class="hero-text">
+            Consult trusted doctors, get AI‑guided diagnostics, and monitor your
+            vitals from anywhere in India.
+          </p>
+          <div class="hero-cta">
+            <button class="btn btn-primary">Book Consultation</button>
+            <button class="btn btn-outline">AI Diagnostics</button>
+            <button class="btn btn-outline">Track Vitals</button>
+          </div>
+          <p class="hero-meta">
+            Available on Web • Android • iOS
+          </p>
+        </div>
+        <div class="hero-right">
+          <div class="hero-image">
+          <img src="images/stethoscope.png" width="540" height="400">
+          </div>
+          <div class="stat-pill">
+            <strong>2k+</strong>
+            Remote consultations
+          </div>
+          <div class="stat-card">
+            <strong>92% patient satisfaction</strong>
+            <span>24/7 AI triage support for faster care decisions.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES -->
+      <section class="section" id="services">
+        <h2 class="section-title">What You Can Do with AERODOC</h2>
+        <p class="section-sub">
+          A single platform for consultations, diagnostics, vitals tracking, and more.
+        </p>
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-icon">📞</div>
+            <h3 class="service-title">Book Online Consultations</h3>
+            <p class="service-text">
+              Connect with trusted specialists in minutes for follow‑ups, second
+              opinions, and chronic care.
+            </p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">🧠</div>
+            <h3 class="service-title">AI Diagnostics & Reports</h3>
+            <p class="service-text">
+              Upload scans and reports to receive AI‑assisted insights that
+              support your doctor’s decisions.
+            </p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">❤️</div>
+            <h3 class="service-title">Track Vitals & Alerts</h3>
+            <p class="service-text">
+              Sync your smart watch or add readings manually and get notified
+              when values go out of range.
+            </p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">💊</div>
+            <h3 class="service-title">Medicine Delivery</h3>
+            <p class="service-text">
+              Receive digital prescriptions and order medicines directly to your home.
+            </p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">🚑</div>
+            <h3 class="service-title">Emergency Connect</h3>
+            <p class="service-text">
+              Trigger ambulance services and share vitals and location with partnered hospitals.
+            </p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">☁️</div>
+            <h3 class="service-title">Hospital Cloud Dashboard</h3>
+            <p class="service-text">
+              Give clinics a unified view of patient reports, remote vitals, and
+              follow‑up schedules.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section class="section" id="how">
+        <h2 class="section-title">How AERODOC Works</h2>
+        <p class="section-sub">
+          Start in minutes and get guided, AI‑assisted care at every step.
+        </p>
+        <div class="steps">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <h3 class="step-title">Create Your Profile</h3>
+            <p class="step-text">
+              Add your basic details, medical history, and current medications
+              to build a secure profile.
+            </p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <h3 class="step-title">Choose a Service</h3>
+            <p class="step-text">
+              Book a consultation, upload reports for AI review, or connect your
+              wearable device.
+            </p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <h3 class="step-title">Get Guided Care</h3>
+            <p class="step-text">
+              Receive AI‑assisted insights, talk to verified doctors, and get
+              digital prescriptions and follow‑ups.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TRUST & ABOUT -->
+      <section class="section" id="about">
+        <div class="trust-row">
+          <div>
+            <h2 class="section-title">Built for Privacy and Safety</h2>
+            <ul class="trust-list">
+              <li>End‑to‑end encrypted video and chat consultations.</li>
+              <li>Health records stored on secure, standards‑aligned cloud infrastructure.</li>
+              <li>Doctors verified through medical council registrations.</li>
+            </ul>
+          </div>
+          <div class="trust-badges">
+            <div class="badge">
+              <div class="badge-icon">👨‍⚕️</div>
+              <span>Verified Doctors</span>
+            </div>
+            <div class="badge">
+              <div class="badge-icon">🛡️</div>
+              <span>Secure Health Data</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 1.6rem;">
+          <h2 class="section-title">Why We Built AERODOC</h2>
+          <p class="about-text">
+            AERODOC started with patients like Kamalamma from Tumkur who travel
+            hours just to renew prescriptions. The goal is to bring expert,
+            AI‑enabled care to every town and village, reducing travel, delays,
+            and anxiety around getting the right diagnosis at the right time.
+          </p>
+          <p class="team-mini">
+            Built by a team of doctors, engineers, and designers focused on
+            accessible, affordable healthcare for India.
+          </p>
+        </div>
+      </section>
+    </section>
+
+    <!-- RIGHT SIDEBAR -->
+    <aside class="sidebar">
+      <!-- TESTIMONIALS -->
+      <section class="card">
+        <div class="card-header">
+          <span>Patient Testimonials</span>
+          <span class="pill">4.8 ★ rating</span>
+        </div>
+        <div class="testimonial-list">
+          <article class="testimonial">
+            <div class="avatar">K</div>
+            <div>
+              <div class="testimonial-name">Kamalamma · Tumkur</div>
+              <p class="testimonial-text">
+                “I no longer travel twice a week to Bangalore. My neurologist
+                follows up online and sends digital prescriptions.”
+              </p>
+              <div class="rating">★★★★★</div>
+            </div>
+          </article>
+          <article class="testimonial">
+            <div class="avatar">R</div>
+            <div>
+              <div class="testimonial-name">Rahul · Mysuru</div>
+              <p class="testimonial-text">
+                “The AI alerts me when my blood pressure is high so I can act
+                early with my doctor.”
+              </p>
+              <div class="rating">★★★★☆</div>
+            </div>
+          </article>
+          <article class="testimonial">
+            <div class="avatar">S</div>
+            <div>
+              <div class="testimonial-name">Shreya · Bengaluru</div>
+              <p class="testimonial-text">
+                “Managing my parents’ reports in one app has made remote care
+                much easier.”
+              </p>
+              <div class="rating">★★★★★</div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- APP PREVIEW -->
+      <section class="card">
+        <div class="card-header">
+          <span>App Snapshots</span>
+          <span style="font-size: 0.75rem; color: var(--muted);">
+            Mobile‑responsive UI
+          </span>
+        </div>
+        <div class="app-preview">
+          <div class="phone">Dashboard Preview</div>
+          <div class="phone">Consultation Screen</div>
+        </div>
+        <div class="store-buttons">
+          <button class="store-btn">
+            <span>Get on Play Store</span>
+          </button>
+          <button class="store-btn">
+            <span>Download on App Store</span>
+          </button>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="contact">
+    <div class="page" style="padding-top: 0; padding-bottom: 1.5rem;">
+      <div>
+        <div class="footer-top">
+          <div>
+            <strong>AERODOC</strong><br />
+            <span style="font-size: 0.8rem;">
+              AI‑powered clinical decision support and remote care platform.
+            </span>
+          </div>
+          <div class="footer-links">
+            <a href="#services">Services</a>
+            <a href="#how">How it works</a>
+            <a href="#about">About</a>
+            <a href="#">FAQs</a>
+            <a href="#">Careers</a>
+            <a href="#">Privacy Policy</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div>
+            © 2025 AERODOC Health Technologies Pvt. Ltd. All rights reserved.
+          </div>
+          <div class="socials">
+            <div class="social-pill">in</div>
+            <div class="social-pill">X</div>
+            <div class="social-pill">IG</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
